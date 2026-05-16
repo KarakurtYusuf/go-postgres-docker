@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 )
 
 type User struct {
@@ -46,6 +47,7 @@ func main() {
 
 }
 
+// GÜMRÜK KAPISI (CORS): İleride yazacağımız Frontend'in (örneğin React), farklı bir porttan gelse bile veritabanımıza erişebilmesi için güvenlik sınırlarını açan ve tarayıcı engellerini kaldıran ara yazılım.
 func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -61,6 +63,7 @@ func enableCORS(next http.Handler) http.Handler {
 	})
 }
 
+// JSON ETİKETLEYİCİ: Sunucumuzdan çıkan her cevabın alnına "Ben bir JSON paketiyim" damgasını vurarak, karşı tarafın (tarayıcının) veriyi düz metin yerine yapılandırılmış bir veri olarak okumasını sağlayan ara yazılım.
 func jsonContentTypeMifdleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
